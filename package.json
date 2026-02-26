@@ -1,0 +1,26 @@
+{
+  "name": "wheels-for-women",
+  "version": "1.0.0",
+  "description": "Ride booking system for women",
+  "main": "bookings.js",
+  "dependencies": {
+    "@turf/turf": "^7.2.0",
+    "bcrypt": "^6.0.0",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "http-proxy-middleware": "^3.0.5",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.14.1",
+    "node-fetch": "^3.3.2"
+  },
+  "scripts": {
+    "start": "node bookings.js",
+    "frontend-start": "PORT=3000 react-scripts start"
+  },
+  "proxy": "http://localhost:5500",
+  "author": "Meher",
+  "license": "MIT",
+  "keywords": []
+}
