@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Wheels for Women</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffe6f2;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            width: 350px;
+        }
+
+        h1 {
+            color: #ff1493;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        .btn {
+            background-color: #ff1493;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #ff007f;
+        }
+
+        .link {
+            color: #ff1493;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Profile</h1>
+        <p id="name">Name: Loading...</p>
+        <p id="email">Email: Loading...</p>
+        <p id="gender">Gender: Loading...</p>
+        <p id="role">Role: Loading...</p>
+        <button class="btn" onclick="openRidePage()">Book a Ride</button>
+
+        <script>
+            function openRidePage() {
+                window.location.href = "booking.html";
+            }
+        </script>
+        <span class="link" onclick="logout()">Logout</span>
+    </div>
+
+    <script>
+        console.log('Profile page loaded');
+        try {
+            // Retrieve current user from localStorage
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+            if (currentUser) {
+                document.getElementById('name').textContent = `Name: ${currentUser.name}`;
+                document.getElementById('email').textContent = `Email: ${currentUser.email}`;
+                document.getElementById('gender').textContent = `Gender: ${currentUser.gender}`;
+                document.getElementById('role').textContent = `Role: ${currentUser.role}`;
+                console.log('User data loaded:', currentUser);
+            } else {
+                console.error('No user found in localStorage');
+                window.location.href = 'profile.html';
+            }
+        } catch (err) {
+            console.error('Error loading user data:', err);
+            window.location.href = 'map1.html';
+        }
+
+        function logout() {
+            console.log('Logging out');
+            try {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'map1.html';
+            } catch (err) {
+                console.error('Error during logout:', err);
+            }
+        }
+    </script>
+    
+</body>
+</html>

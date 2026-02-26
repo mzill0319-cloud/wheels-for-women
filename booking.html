@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheels for Women - Ride Service</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f7c2c2;
+            margin: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .btn-custom {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn-custom:hover {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="mb-4">Wheels for Women 🚘</h1>
+
+        <label for="pickup">Pickup Location:</label>
+        <input type="text" id="pickup" class="form-control mb-3" placeholder="Enter Pickup Location">
+
+        <label for="destination">Drop Location:</label>
+        <input type="text" id="destination" class="form-control mb-3" placeholder="Enter Drop Location">
+
+        <label for="vehicleType">Select Vehicle:</label>
+        <select id="vehicleType" class="form-select mb-3">
+            <option value="Scooty">🛵 Scooty (₹30/km)</option>
+            <option value="Auto">🚕 Auto (₹50/km)</option>
+            <option value="Cab">🚗 Cab (₹100/km)</option>
+        </select>
+
+        <button class="btn btn-custom mb-3" onclick="showFare()">Show Fare</button>
+        <button id="book-button" class="btn btn-success mb-3" style="display: none;">Book a Ride</button>
+
+        <p><strong>Distance:</strong> <span id="confirmDistance"></span> km</p>
+        <p><strong>Fare:</strong> ₹<span id="confirmFare"></span></p>
+        <p id="message" class="text-success mt-2"></p>
+    </div>
+
+    <script>
+        function showFare() {
+            const pickup = document.getElementById("pickup").value;
+            const destination = document.getElementById("destination").value;
+            const vehicleType = document.getElementById("vehicleType").value;
+
+            if (!pickup || !destination) {
+                alert("Please enter both pickup and drop locations.");
+                return;
+            }
+
+            const distance = Math.random() * (10 - 2) + 2; // Simulating distance
+            const farePerKm = vehicleType === "Scooty" ? 30 : vehicleType === "Auto" ? 50 : 100;
+            const fare = distance * farePerKm;
+
+            document.getElementById("confirmDistance").innerText = distance.toFixed(2);
+            document.getElementById("confirmFare").innerText = fare.toFixed(2);
+            document.getElementById("book-button").style.display = "block"; // Show booking button
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("book-button").addEventListener("click", async function bookRide() {
+                const pickup_location = document.getElementById("pickup").value.trim();
+                const drop_location = document.getElementById("destination").value.trim();
+                const vehicle_type = document.getElementById("vehicleType").value;
+
+                if (!pickup_location || !drop_location || !vehicle_type) {
+                    alert("Please enter all fields before booking the ride.");
+                    return;
+                }
+
+                console.log("🚀 Booking Data Sent:", { pickup_location, drop_location, vehicle_type });
+
+                try {
+                    const response = await fetch("http://localhost:5500/book", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ pickup_location, drop_location, vehicle_type })
+                    });
+
+                    console.log("🔍 Response Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    console.log("✅ API Response:", result);
+                    document.getElementById("message").innerText = result.message;
+                } catch (error) {
+                    console.error("❌ Error sending request:", error);
+                    document.getElementById("message").innerText = "Booking failed.";
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

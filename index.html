@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Wheels for Women</title>
+    <style>
+        /* General Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            overflow: hidden; /* Disable scrolling */
+        }
+
+        .background {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff1493, #ff6bd6, #ffe6f2);
+            background-size: 300% 300%;
+            animation: gradientBackground 10s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease;
+        }
+
+        p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            animation: fadeIn 3s ease;
+        }
+
+        .loading-dots {
+            font-size: 18px;
+            font-weight: bold;
+            animation: blink 1.5s step-start infinite;
+        }
+
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Theme -->
+    <div class="background">
+        <h1>Welcome to Wheels for Women</h1>
+        <p>Your trusted ride service for women, ensuring safety and empowerment.</p>
+        <p class="loading-dots">Redirecting<span>.</span><span>.</span><span>.</span></p>
+    </div>
+
+    <script>
+        // Redirect to the Registration Page after 5 seconds
+        setTimeout(() => {
+            window.location.href = "map1.html"; // Replace with your registration page URL
+        }, 2000); // 5-second delay
+    </script>
+</body>
+</html>

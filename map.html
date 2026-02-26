@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Wheels for Women</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffe6f2;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            width: 350px;
+        }
+
+        h1 {
+            color: #ff1493;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        input, select {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn {
+            background-color: #ff1493;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #ff007f;
+        }
+
+        .link {
+            color: #ff1493;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            display: block;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sign In Section -->
+    <div class="container" id="signInForm">
+        <h1>Welcome to Wheels for Women! 💖</h1>
+        <p>Your trusted ride, only for women. Safe, reliable, and easy to use!</p>
+        <h2>Sign In</h2>
+        <form id="signIn">
+            <input type="email" id="signInEmail" placeholder="Enter Email" required>
+            <input type="password" id="signInPassword" placeholder="Enter Password" required>
+            <div id="signInError" class="error"></div>
+            <button type="submit" class="btn">Sign In</button>
+        </form>
+        <span class="link" onclick="showRegistration()">Not a member? Register here!</span>
+    </div>
+
+    <!-- Registration Section (Hidden Initially) -->
+    <div class="container" id="registrationForm" style="display: none;">
+        <h2>Register Now</h2>
+        <form id="register">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="text" id="gender" placeholder="Gender (Must be 'Female')" required>
+            <select id="role" required>
+                <option value="customer">Customer</option>
+                <option value="driver">Driver</option>
+                <option value="admin">Admin</option>
+            </select>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+            <div id="registerError" class="error"></div>
+            <button type="submit" class="btn">Register</button>
+        </form>
+        <span class="link" onclick="showSignIn()">Already a member? Sign in here!</span>
+    </div>
+
+    <script>
+        // Initialize user storage
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+
+        function showRegistration() {
+            console.log('Showing registration form');
+            document.getElementById('signInForm').style.display = 'none';
+            document.getElementById('registrationForm').style.display = 'block';
+        }
+
+        function showSignIn() {
+            console.log('Showing sign-in form');
+            document.getElementById('registrationForm').style.display = 'none';
+            document.getElementById('signInForm').style.display = 'block';
+        }
+
+        document.getElementById('register').addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log('Registration form submitted');
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const gender = document.getElementById('gender').value.toLowerCase();
+            const role = document.getElementById('role').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorDiv = document.getElementById('registerError');
+
+            if (!name || !email || !gender || !role || !password || !confirmPassword) {
+                errorDiv.textContent = 'Please fill in all fields.';
+                errorDiv.style.display = 'block';
+                console.error('Missing fields');
+                return;
+            }
+
+            if (gender !== 'female') {
+                errorDiv.textContent = 'Only female users can register.';
+                errorDiv.style.display = 'block';
+                console.error('Gender must be female');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                errorDiv.textContent = 'Passwords do not match.';
+                errorDiv.style.display = 'block';
+                console.error('Passwords do not match');
+                return;
+            }
+
+            if (password.length <6) {
+                errorDiv.textContent = 'Password must be at least 6 characters.';
+                errorDiv.style.display = 'block';
+                console.error('Password too short');
+                return;
+            }
+
+            try {
+                // Store user data
+                const user = { name, email, gender, role, password };
+                users.push(user);
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                console.log('User registered:', user);
+
+                errorDiv.style.display = 'none';
+                // Redirect to profile.html
+                window.location.href = 'profile.html';
+            } catch (err) {
+                errorDiv.textContent = 'Error saving user data.';
+                errorDiv.style.display = 'block';
+                console.error('Error during registration:', err);
+            }
+        });
+
+        document.getElementById('signIn').addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log('Sign-in form submitted');
+
+            const email = document.getElementById('signInEmail').value;
+            const password = document.getElementById('signInPassword').value;
+            const errorDiv = document.getElementById('signInError');
+
+            if (!email || !password) {
+                errorDiv.textContent = 'Please fill in all fields.';
+                errorDiv.style.display = 'block';
+                console.error('Missing sign-in fields');
+                return;
+            }
+
+            const user = users.find(u => u.email === email && u.password === password);
+            if (!user) {
+                errorDiv.textContent = 'Invalid email or password.';
+                errorDiv.style.display = 'block';
+                console.error('Invalid credentials');
+                return;
+            }
+
+            try {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                console.log('User signed in:', user);
+                errorDiv.style.display = 'none';
+                window.location.href = 'profile.html';
+            } catch (err) {
+                errorDiv.textContent = 'Error during sign-in.';
+                errorDiv.style.display = 'block';
+                console.error('Error during sign-in:', err);
+            }
+        });
+    </script>
+</body>
+</html>
